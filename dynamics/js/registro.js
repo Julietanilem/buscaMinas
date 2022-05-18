@@ -22,9 +22,23 @@ nom2.addEventListener("keyup", ()=>{
     }
 
 });
-guardar.addEventListener("click", ()=>
-{
-    form.style.display="none";
-    console.log("no");
+nom2.addEventListener("change", ()=>{
+    if(nom1.value==nom2.value)
+    {
+        guardar.disabled=false;
+    }
+    else{
+        guardar.disabled=true;
+    }
+
+});
+nom1.addEventListener("change", ()=>{
+    if(nom1.value==nom2.value)
+    {
+        guardar.disabled=false;
+    }
+    else{
+        guardar.disabled=true;
+    }
 
 });
