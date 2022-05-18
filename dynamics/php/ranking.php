@@ -54,11 +54,31 @@
         }
         asort($arregloDeSegundos);
         $lugar=0;
-      
+        switch($id_nivel)
+        {
+            case 1:
+                {
+                    $nivel="Fácil";
+                    break;
+                }
+            case 1:
+                {
+                    $nivel="Medio";
+                    break;
+                }
+            case 1:
+                {
+                    $nivel="Difícil";
+                    break;
+                }
+        }
     
     
         echo"<br><br><table border='1'>
        <thead>
+        <tr>
+        <td colspan='4'>$nivel</td>
+        </tr> 
         <tr>
             <td>Lugar</td>
             <td>Jugador</td>
