@@ -1,0 +1,77 @@
+/*fonts*/
+@font-face {
+    font-family: '2P';
+    src: url('../Font/Press_Start_2P/PressStart2P-Regular.ttf');
+    font-style: normal;
+    font-weight: normal;
+  }
+
+@font-face {
+    font-family: 'optima';
+    src: url('../Font/optima-cufonfonts/Optima\ Medium.ttf');
+    font-style: normal;
+    font-weight: normal;
+  }
+/*fondo*/
+body{
+    width: 99%;
+    height: 99%;
+    font-family: 'optima';
+    background-image: url(./descarga.jpg);
+    background-size: cover;
+    background-repeat:no-repeat;
+}
+
+/*titulo :D*/
+header{
+    position: absolute;
+    top: 20px;
+    left: 320px;
+    font-size: 32px;
+    font-family: '2P';
+    color: #7d319e;
+}
+
+/*opciones de dificultad*/
+.dfl{
+    position: absolute;
+    width: 267px;
+    height: 158px;
+}
+
+.dfl h4{
+    color: #FFFFFFFF;
+    text-align: center;
+}
+
+.dfl p{
+    color: #FFFFFFFF;
+}
+
+#f{
+    left: 80px;
+    top: 300px;
+    background: #222a59c6;
+}
+
+#m{
+    left: 520px;
+    top: 300px;
+    background: #010326b1;
+}
+
+#d{
+    left: 1020px;
+    top: 300px;
+    background: #730240d0;
+}
+
+.ptj{
+    left: 80px;
+    top: 500px;
+    position: absolute;
+    width: 80px;
+    height: 20px;
+    font-size: 12px;
+    background: #36D9D9;
+}
