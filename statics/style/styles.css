@@ -76,3 +76,10 @@ header{
     font-size: 12px;
     background: #36D9D9;
 }
+#tablero
+{
+    position: absolute;
+    top:5vh;
+    left:30vw;
+    background-color: beige;
+}
