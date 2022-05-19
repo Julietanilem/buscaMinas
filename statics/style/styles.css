@@ -99,6 +99,9 @@ header{
     font-weight: bolder;
 }
 #img{
-    height: 3.5vw;
-    width: 3.5vw;
+    height: 15px;
+    width: 15px;
+}
+.casillita:hover{
+    background-color: rgb(164, 64, 64);
 }

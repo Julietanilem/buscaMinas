@@ -1,12 +1,15 @@
 const tabla= document.getElementById("tablero");
 const btn_puntaje = document.getElementById("btn-puntaje");
 const btn_nivel = document.getElementById("btn-nivel");
-const audioExplo= new Audio ("./statics/media/audio/vanish_1.mp3");
+const audioExplo= new Audio ("./statics/audio/explosion.mp3");
 let dificultad=0;
 const matriz=[]; 
 matriz[0]=[0,0];
 var click=true;
 var ganaste=0; 
+var filas;
+var suma;
+var perdiste=0;
 function crearTablero(filas, minas)
 {
     matriz[0]=[0,0]; 
@@ -175,11 +178,14 @@ btn_nivel.addEventListener("click", (evento) =>{
 
     btn_nivel.style.display="none"; 
 });
-var volteados;
+var volteados=0;
+click=true;
 tabla.addEventListener("click", (evento)=>
 {
-    if(evento.target.id!="tablero")
+    if(perdiste==0)
     {
+        if(evento.target.id!="tablero")
+        {
         if(ganaste==1)
         {
             alert("ganaste");
@@ -197,7 +203,17 @@ tabla.addEventListener("click", (evento)=>
             var filas=8;
             var bombas1=10;
         }
-        console.log(cuadid);
+        
+        if(dificultad == "d")
+        {
+            var filas=24;
+            var bombas1=99;
+        }
+        if(dificultad == "m")
+        {
+            var filas=16;
+            var bombas1=40;
+        }
         if(dificultad == "d" || dificultad == "m" ) 
         {
             if(cuadid<100)
@@ -205,27 +221,24 @@ tabla.addEventListener("click", (evento)=>
                 fila=cuadid/10;
                 fila=Math.floor(fila);
                 col=cuadid%10;
-                var filas=24;
-                var bombas1=40;
+                
             }
             else if (cuadid<1000){
                 fila=cuadid/100;
                 fila=Math.floor(fila);
                 col=cuadid%10;
-                var filas=10;
-                var bombas1=40;
+             
             }
             else if(cuadid<10000)
             {
                 fila=cuadid/100;
                 fila=Math.floor(fila);
                 col=cuadid%100;
-                const  filas=24;
-                const bombas1=90;
+            
             }
         }
         
-        console.log(fila+" "+col);
+     
         if(click==true)
         {
             if(dificultad == "f") 
@@ -245,7 +258,7 @@ tabla.addEventListener("click", (evento)=>
             if(dificultad == "d")
             {
                
-                 bombas(90, 24, matriz); 
+                 bombas(99, 24, matriz); 
             }
                
           asigNum(matriz, filas);
@@ -255,11 +268,12 @@ tabla.addEventListener("click", (evento)=>
         if(matriz[fila][col].tieneMina==true && click==false)
             {
                 evento.target.innerHTML="<img src='./statics/img/mina.jpg' id='img'/ >"
+                audioExplo.play();
+                audioExplo.volume=0.4;
                 audioExplo.addEventListener("ended", ()=>{
                         alert("Perdiste :((");
                 });
-               
-                // window.location.href = "."
+               perdiste=1;
             }
         else{
             evento.target.innerHTML=matriz[fila][col].minasCerca;
@@ -275,6 +289,7 @@ tabla.addEventListener("click", (evento)=>
 
     }
    
+    }
    
     
 });
