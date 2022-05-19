@@ -39,12 +39,12 @@ header{
     height: 158px;
 }
 
-.dfl h4{
+.dfl, h4{
     color: #FFFFFFFF;
     text-align: center;
 }
 
-.dfl p{
+.dfl, p{
     color: #FFFFFFFF;
 }
 
@@ -53,17 +53,25 @@ header{
     top: 300px;
     background: #222a59c6;
 }
+#f:hover{
+    background: #4251a8c6;
+}
 
 #m{
     left: 520px;
     top: 300px;
     background: #010326b1;
 }
-
+#m:hover{
+    background: #02086eb1;
+}
 #d{
     left: 1020px;
     top: 300px;
     background: #730240d0;
+}
+#d:hover{
+    background: #b80366d0;
 }
 
 /* boton de puntaje*/
@@ -79,7 +87,18 @@ header{
 #tablero
 {
     position: absolute;
-    top:5vh;
+    top:10vh;
     left:30vw;
     background-color: beige;
+}
+.casillita{
+    width: 20px;
+    height: 20px;
+    background-color: brown;
+    text-align: center;
+    font-weight: bolder;
+}
+#img{
+    height: 3.5vw;
+    width: 3.5vw;
 }
