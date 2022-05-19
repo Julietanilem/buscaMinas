@@ -102,3 +102,43 @@ header{
     height: 3.5vw;
     width: 3.5vw;
 }
+
+.contenedor{
+    position: absolute;
+    width: 500px;
+    height: 300px;
+    left: 125px;
+    top: 200px;
+    background: #36d9d9dd;
+}
+
+.btn{
+    position: absolute;
+    width: 150px;
+    height: 75px;
+}
+
+#btn-puntaje{
+    left: 125px;
+    top: 10%;
+    background: #010326d5;
+}
+
+#btn-puntaje p{
+    color: #FFFFFFFF;
+}
+    
+#btn-facil{
+    left: 3%;
+    top: 40%;
+}
+
+#btn-medio{
+    left: 35%;
+    top: 40%;
+}
+
+#btn-dificil{
+    left: 67%;
+    top: 40%;
+}
