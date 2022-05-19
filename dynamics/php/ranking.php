@@ -5,6 +5,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ranking</title>
+    <link rel="stylesheet" href="../../statics/style/styles.css">
+
 </head>
 <body>
     <?php
@@ -37,74 +39,87 @@
         $datos2=mysqli_fetch_array($query, MYSQLI_ASSOC);
 
         
-        $peticion="SELECT * FROM registro WHERE id_nivel=$id_nivel";
+       
+        $peticion= "SELECT * FROM registro";
         $query = mysqli_query( $conexion, $peticion); 
-        $arregloDeSegundos=[];
-        $ids=[];
-        $fechas=[];
+        $datos_usuario=mysqli_fetch_array($query, MYSQLI_ASSOC);
 
-
-        
-        $i=0;
-        while($row=mysqli_fetch_array($query, MYSQLI_ASSOC)){
-            $arregloDeSegundos[$i]=$row['segundos'];
-            $ids[$i]=$row['id_usuario'];
-            $fechas[$i]=$row['fecha'];
-            $i++;
-        }
-        asort($arregloDeSegundos);
-        $lugar=0;
-        switch($id_nivel)
+        $niveles = 1;
+        while($niveles<=3)
         {
-            case 1:
-                {
+            switch($niveles){
+                case 1:{
                     $nivel="Fácil";
                     break;
                 }
-            case 1:
-                {
+                case 2:{
                     $nivel="Medio";
                     break;
                 }
-            case 1:
-                {
+                case 3:{
                     $nivel="Difícil";
                     break;
                 }
-        }
-    
-    
-        echo"<br><br><table border='1'>
-       <thead>
-        <tr>
-        <td colspan='4'>$nivel</td>
-        </tr> 
-        <tr>
-            <td>Lugar</td>
-            <td>Jugador</td>
-            <td>Tiempo para acabar</td>
-            <td>Fecha</td>
-        </tr>
-       </thead>
-        <tbody>";
-        foreach($arregloDeSegundos as $llave=>$valor)
-        {
-            
-            $lugar++;
-            echo "<tr><td>$lugar</td>";
-            $nombre=$ids[$llave];
-            $peticion= "SELECT * FROM usuario WHERE id_usuario='$nombre'";
+            }
+            $peticion="SELECT * FROM registro WHERE ID_nivel=$niveles";
             $query = mysqli_query( $conexion, $peticion); 
-            $datos2=mysqli_fetch_array($query, MYSQLI_ASSOC);
-            $nombre=$datos2['nombre'];
-            echo "<td>$nombre</td>
-            <td>$valor</td>
-            <td>$fechas[$llave]</td>  </tr>";
-        }
-       
-        echo "</tbody>
-        
-        </table>"
+            // $datos=mysqli_fetch_array($query, MYSQLI_ASSOC);
+            $segundos=[];
+            $ids=[];
+            $fechas=[];
+
+            $i=0;
+            while($row=mysqli_fetch_array($query, MYSQLI_ASSOC)){
+                $segundos[$i]=$row['segundos'];
+                $ids[$i]=$row['id_usuario'];
+                $fechas[$i]=$row['fecha'];
+                $i++;
+            }
+            asort($segundos);
+            $lugar=0;
+            
+            echo"<br><br><table border='1' id='tabla' align='center'y>
+            <thead>
+             <tr>
+             <td colspan='4'>$nivel</td>
+             </tr> 
+             <tr>
+                 <td>Lugar</td>
+                 <td>Jugador</td>
+                 <td>Tiempo para acabar</td>
+                 <td>Fecha</td>
+             </tr>
+            </thead>
+             <tbody>";
+            if($ids != NULL)
+            {
+                foreach($segundos as $llave=>$valor)
+                {
+                    
+                    $lugar++;
+                    echo "<tr><td>$lugar</td>";
+                    $nombre=$ids[$llave];
+                    $peticion= "SELECT * FROM usuario WHERE id_usuario='$nombre'";
+                    $query = mysqli_query( $conexion, $peticion); 
+                    $datos2=mysqli_fetch_array($query, MYSQLI_ASSOC);
+                    $nombre=$datos2['nombre'];
+                    echo "<td>$nombre</td>
+                    <td>$valor</td>
+                    <td>$fechas[$llave]</td>  </tr>";
+                }
+            }
+            else 
+            {
+                echo"<tr> <td colspan='4'>Todavía nadie se registra en este nivel :) </td></tr>"; 
+            }
+            echo "</tbody>
+            
+            </table>"; 
+            $niveles++;
+        } 
     ?>
+     <form class="inicio" action="../../BuscaMinas.html" method="post">
+            <button id="btn-regresar" type="submit" >Regresar al inicio</button>
+    </form>
 </body>
 </html>
