@@ -13,15 +13,19 @@
         include("./config.php"); 
         $conexion = connect(); 
         $usuario=(isset($_POST['nombre1']) && $_POST['nombre1'] != "")? $_POST['nombre1']: false;
-        $puntaje=getdate();
-        $segundos=10;
+
+      
         $id_nivel=1;
         date_default_timezone_set('America/Mexico_City');
         $fecha=date('Y-m-d H:i:s');
         $peticion= "SELECT *FROM usuario WHERE nombre='$usuario'";
         $query = mysqli_query( $conexion, $peticion); 
         $datos=mysqli_fetch_array($query, MYSQLI_ASSOC);
-       
+       $cookie=$_COOKIE["Tiempo"];
+    //    var_dump($cookie);
+    //    var_dump($_COOKIE["Tiempo"]);
+         $segundos=$cookie;
+         
         if($datos==NULL)
         {
             $peticion= "INSERT INTO usuario (nombre) VALUES ('$usuario')";
@@ -32,7 +36,9 @@
         $query = mysqli_query( $conexion, $peticion); 
         $datos2=mysqli_fetch_array($query, MYSQLI_ASSOC);
         $id_usuario=$datos2['id_usuario'];
+      
         $peticion= "INSERT INTO registro (id_usuario, id_nivel, segundos, fecha) VALUES ($id_usuario, $id_nivel, $segundos ,'$fecha' )";
+        
         $query = mysqli_query( $conexion, $peticion); 
         $peticion= "SELECT * FROM registro";
         $query = mysqli_query( $conexion, $peticion); 
@@ -95,7 +101,7 @@
             {
                 foreach($segundos as $llave=>$valor)
                 {
-                    
+                   
                     $lugar++;
                     echo "<tr><td>$lugar</td>";
                     $nombre=$ids[$llave];
@@ -110,7 +116,7 @@
             }
             else 
             {
-                echo"<tr> <td colspan='4'>Todavía nadie se registra en este nivel :) </td></tr>"; 
+                echo"<tr> <td colspan='4'>Todavía no hay registros </td></tr>"; 
             }
             echo "</tbody>
             
@@ -121,5 +127,6 @@
      <form class="inicio" action="../../BuscaMinas.html" method="post">
             <button id="btn-regresar" type="submit" >Regresar al inicio</button>
     </form>
+ 
 </body>
 </html>

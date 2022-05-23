@@ -1,6 +1,8 @@
 const tabla= document.getElementById("tablero");
 const btn_puntaje = document.getElementById("btn-puntaje");
 const btn_nivel = document.getElementById("btn-nivel");
+const btn_intenta = document.getElementById("IntentaDeNuevo");
+const btn_registrate = document.getElementById("registrar");
 const audioExplo= new Audio ("./statics/audio/explosion.mp3");
 let dificultad=0;
 const matriz=[]; 
@@ -11,8 +13,13 @@ var ganaste=0;
 var filas;
 var suma;
 var perdiste=0;
+var casillaVolteada=0;
+var inicio=0;
+var dificultad2=0;
+var llamadas=0;
 function crearTablero(filas)
 {
+    casillaVolteada=0;
     matriz[0]=[0,0]; 
     for(let x=0; x<filas; x++)
     {
@@ -38,7 +45,8 @@ function crearTablero(filas)
         };
     };
     let linea="";
-    //linea += "<br><table id='tablero' border='1'>";
+  
+    linea += "<br><table border='1'>";
     while(i<filas)
     {
         linea+="<tr>";
@@ -67,7 +75,7 @@ function crearTablero(filas)
                 }
             
             }
-            
+     
             
     
             ii++;
@@ -87,8 +95,8 @@ function bombas(cantidad, filas, matriz, fila, col)
     for(let x=0; x<cantidad; x++)
     {
         do{
-           ejex=(Math.round((Math.random()*10)))%filas; 
-           ejey= (Math.round((Math.random()*10)))%filas; 
+           ejex=(Math.round((Math.random()*100)))%filas; 
+           ejey= (Math.round((Math.random()*100)))%filas; 
         
         }while(matriz[ejex][ejey].tieneMina==true && (fila!=ejey && col!=ejex));
         matriz[ejex][ejey].tieneMina=true;
@@ -172,23 +180,47 @@ function asigNum (matriz, filas){
             ejey++;
        }
         ejex++;
-   }
-       
+   }   
    
 
 }
-function voltear(fila, col, matriz)
-{       console.log(matriz[fila][col]);
-      //  identificador= matriz[fila][col].id_completo;
+function voltear(fila, col, matriz, filas)
+{
+    for (let c=0;c<filas; c++)
+    {   
+        
+        for(let a=0;a<filas;a++)
+        {
+            if(matriz[c][a].volteado==true)
+            {
+                tabla.children[1].children[c].children[a].innerHTML=matriz[c][a].minasCerca;
 
-        // console.log(identificador);
-        // var elemento=document.getElementById(identificador);
-        // console.log(elemento);
-        // elemento.setAttribute("style", "background-color:pink");
-        // elemento.innerHTML=elemento.minasCerca;
+            
+                tabla.children[1].children[c].children[a].  setAttribute("style", "background-color:pink" );
+                casillaVolteada++;
+            }
+            
+        }
+        a=0;
+    }  
 }
+function verBombas(filas){
+   // console.log(tabla.children[1].children[3].children[0]);
 
-function limpiar(matriz, fila, col, filas){
+    for (let c=0;c<filas; c++)
+    {   
+        a=0;
+        for(let a=0;a<filas;a++)
+        {
+            if(matriz[c][a].tieneMina==true)
+            {
+                tabla.children[1].children[c].children[a].innerHTML="<img src='./statics/img/mina.jpg' id='img'/ >";
+            }
+            
+        }
+    }
+}
+function limpiar(matriz, fila, col, filas=dificultad2){
 
 		if(matriz[fila][col].minasCerca==0)
         {
@@ -196,39 +228,40 @@ function limpiar(matriz, fila, col, filas){
             {
                 var fila2=fila+x;
                 var y=-1;
-                if(col+x-1<0)
-                {
-                    x++;
-                }
-                if(col+x+1>=filas){
-                    x++;
-                }
+              
                 for(y=-1;y<2;y++)
                 {
-                    if(col+y-1<0)
-                    {
-                        y++;
-                    }
-                    if(col+y+1>=filas){
-                        y++;
-                    }
-                    if(x==0 && y==0)
-                    {
-                        y++;
-                    }
+                   
+                
                     var column2=col+y;
-                    voltear(fila2, column2, matriz);
-                    if(matriz[fila2][column2].minasCerca==0)
-                    {
-                        limpiar(matriz,fila2, column2 );
-                    }
+                   if(column2<filas && fila2<filas && column2>=0 && fila2>=0)
+                   {
+                       console.log(fila2+" "+column2);
+                        matriz[fila2][column2].volteado=true;
+                        
+                        console.log( matriz[fila2][column2]);
+                       if(llamadas<100)
+                       {
+                           if(matriz[fila2][column2].minasCerca==0)
+                            {
+                             
+                                llamadas++;
+                                limpiar(matriz,fila2, column2);
+                                
+                            }
+                       }
+                       
+                   }
+                    
+                    
+                    
                 }
             }
             
-                
+            
             
         }
-		
+		voltear(fila2, column2, matriz, filas);
 }
 
 btn_nivel.addEventListener("click", (evento) =>{
@@ -238,18 +271,20 @@ btn_nivel.addEventListener("click", (evento) =>{
     {
 
         crearTablero(8); 
-
+        dificultad2=8;
     }
         
     if(dificultad == "m")
     {
         crearTablero(16); 
+        dificultad2=16;
     }
         
 
     if(dificultad == "d")
     {
         crearTablero(24); 
+        dificultad2=24;
     }
         
 
@@ -259,145 +294,186 @@ btn_nivel.addEventListener("click", (evento) =>{
 
 tabla.addEventListener("click", (evento)=>
 {
-    if(perdiste!=1)
+    
+    if(perdiste!=1 && ganaste!=1)
     {
         if(evento.target.id!="tablero")
         {
-        if(ganaste==1)
-        {
-            alert("ganaste");
-            //redirijirte a registr
-        }
-        cuadid=evento.target.id;
-    
-        if(dificultad == "f"  ) 
-        {
-            fila=cuadid/10;
-            fila=Math.floor(fila);
-            col=cuadid%10;
-            var filas=8;
-            var bombas1=10;
-        }
+             inicio = new Date();
+     
+            if(ganaste==1)
+            {
+                alert("ganaste");
+                btn_registrate.style.display="block";
+                fin = new Date();
+               var  tiempoTotal= (fin.getTime() - inicio.getTime())/1000;
+                //cokie del total
+         
+                co=document.cookie = "Tiempo="+tiempoTotal;
+                console.log(co);
+                verBombas(filas);
+            }
+            cuadid=evento.target.id;
         
-        if(dificultad == "d")
-        {
-            var filas=24;
-            var bombas1=99;
-        }
-        if(dificultad == "m")
-        {
-            var filas=16;
-            var bombas1=40;
-        }
-        if(dificultad == "d" || dificultad == "m" ) 
-        {
-       
-            if(cuadid<100)
+            if(dificultad == "f"  ) 
             {
                 fila=cuadid/10;
                 fila=Math.floor(fila);
                 col=cuadid%10;
-                
+                var filas=8;
+                var bombas1=10;
             }
-            else if (cuadid<10000){
-                fila=cuadid/100;
-                fila=Math.floor(fila);
-                col=cuadid%100;
-             
-            }
-            else if(cuadid<100000)
-            {
-              
-                if(cuadid%10==0)
-                {
-                    cuadid/=100;
-                    cuadid=Math.floor(cuadid);
-
-                    fila=cuadid/100;
-                    fila=Math.floor(fila);
-                    col=cuadid%100;
-                }
-                else if(cuadid%10==1)
-                {
-                    cuadid/=100;
-                    cuadid=Math.floor(cuadid);
-
-
-                    fila=cuadid/10;
-                    fila=Math.floor(fila);
-                    col=cuadid%10;
-                }
-               
-
-            if(matriz[fila][col].volteado==false)
-            {
-                evento.target.id=cuadid;
-            
-
-            }
-            
-            
-            }
-        }
-        
-     
-        if(click==true)
-        {
-            if(dificultad == "f") 
-            {
-            
-                bombas(10, 8, matriz, fila, col); 
-        
-            }
-                
-            if(dificultad == "m") 
-            {
-                
-                 bombas(40,16, matriz, fila, col); 
-            }
-                
         
             if(dificultad == "d")
             {
-               
-                 bombas(99, 24, matriz, fila, col); 
+                var filas=24;
+                var bombas1=99;
             }
-               
-          asigNum(matriz, filas);
-         
-        }
-   
-        if(matriz[fila][col].tieneMina==true && click==false)
+            if(dificultad == "m")
             {
-                evento.target.innerHTML="<img src='./statics/img/mina.jpg' id='img'/ >"
-                audioExplo.play();
-                audioExplo.volume=0.4;
+                var filas=16;
+                var bombas1=40;
+            }
+            if(dificultad == "d" || dificultad == "m" ) 
+            {
+        
+                if(cuadid<100)
+                {
+                    fila=cuadid/10;
+                    fila=Math.floor(fila);
+                    col=cuadid%10;
+                    
+                }
+                else if (cuadid<10000){
+                    fila=cuadid/100;
+                    fila=Math.floor(fila);
+                    col=cuadid%100;
                 
-                alert("Perdiste :((");
-    
-               perdiste=1;
-            }
-        else{
-            evento.target.innerHTML=matriz[fila][col].minasCerca;
-            matriz[fila][col].volteado=true;
-            evento.target.setAttribute("style", "background-color:pink" );
-            volteados++;
-            if(matriz[fila][col].minasCerca==0)
-            {
-                limpiar(matriz, fila, col, filas);
+                }
+                else if(cuadid<100000)
+                {
+                
+                    if(cuadid%10==0)
+                    {
+                        cuadid/=100;
+                        cuadid=Math.floor(cuadid);
+
+                        fila=cuadid/100;
+                        fila=Math.floor(fila);
+                        col=cuadid%100;
+                    }
+                    else if(cuadid%10==1)
+                    {
+                        cuadid/=100;
+                        cuadid=Math.floor(cuadid);
+
+
+                        fila=cuadid/10;
+                        fila=Math.floor(fila);
+                        col=cuadid%10;
+                    }
+                
+
+                if(matriz[fila][col].volteado==false)
+                {
+                    evento.target.id=cuadid;
+                
+
+                }
+                
+                
+                }
             }
             
-        }
-        if(click== (filas*filas)-bombas1){
-            ganaste=1;
-        }
-        click=false;
-    }
-   
-    }
-   
+     
+            if(click==true)
+            {
+                if(dificultad == "f") 
+                {
+                
+                    bombas(10, 8, matriz, fila, col); 
+            
+                }
+                    
+                if(dificultad == "m") 
+                {
+                    
+                    bombas(40,16, matriz, fila, col); 
+                }
+                    
+            
+                if(dificultad == "d")
+                {
+                
+                    bombas(99, 24, matriz, fila, col); 
+                }
+                
+            asigNum(matriz, filas);
+            
+            }
     
+            if(matriz[fila][col].tieneMina==true && click==false)
+                {
+                    evento.target.innerHTML="<img src='./statics/img/mina.jpg' id='img'/ >"
+                    audioExplo.play();
+                    audioExplo.volume=0.4;
+                    
+                    alert("Perdiste :((");
+                    verBombas(filas);
+                    perdiste=1;
+                    if(perdiste==1)
+                        {
+                            
+                            btn_intenta.style.display="block";
+                            btn_intenta.addEventListener("click", ()=>{
+                                perdiste=0;
+                                if(dificultad == "f")
+                                {
+                            
+                                    crearTablero(8); 
+                            
+                                }
+                                    
+                                if(dificultad == "m")
+                                {
+                                    crearTablero(16); 
+                                }
+                                    
+                            
+                                if(dificultad == "d")
+                                {
+                                    crearTablero(24); 
+                                }
+                                btn_intenta.style.display="none";     
+                                click=true; 
+
+                            });
+                    }
+                
+                }
+            else{
+                evento.target.innerHTML=matriz[fila][col].minasCerca;
+                matriz[fila][col].volteado=true;
+                evento.target.setAttribute("style", "background-color:pink" );
+                casillaVolteada++;
+                llamadas=0;
+                if(matriz[fila][col].minasCerca==0)
+                {
+                    limpiar(matriz, fila, col, filas);
+                }
+                
+            }
+            if(casillaVolteada== (filas*filas)-bombas1){
+                ganaste=1;     
+            }
+            click=false;
+        }
+    
+    }
+    
+
 });
+
 tabla.addEventListener('contextmenu', (evento)=>{
     if(   evento.target.tienebandera==true)
     {
@@ -415,3 +491,4 @@ tabla.addEventListener('contextmenu', (evento)=>{
     
     
 });
+

@@ -1,3 +1,18 @@
+body{
+    width: 99%;
+    height: 99%;
+    font-family: 'optima';
+    background-image: url(./descarga.jpg);
+    background-size: cover;
+    background-repeat:no-repeat;
+    background-color: #7d319e;
+}
+
+
 form{
-    display:block;
+    width: 30vw;
+    position: relative;
+    left:30vw;
+    color:aliceblue;
+    background-color: blueviolet;
 }
